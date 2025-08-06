@@ -1,13 +1,16 @@
 FROM registry.redhat.io/rhel10/rhel-bootc:latest
 
-# Install Apache HTTP server
-RUN dnf install -y httpd && dnf clean all
+# Install software
+RUN dnf install -y httpd git && dnf clean all
 
-# Copy site content to Apache's default web root
+# Copy content to Apache's default web root
 COPY web/ /var/www/html/
 
-# Enable httpd to start at boot
-RUN systemctl enable httpd
+# Do stuff
+RUN systemctl enable httpd 
+
+RUN git clone https://github.com/dylanaraps/neofetch /opt/neofetch && \
+    ln -s /opt/neofetch/neofetch /usr/local/bin/neofetch
 
 CMD ["/usr/bin/bash"]
 
